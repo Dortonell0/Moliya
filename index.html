@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MOLIYA PRO</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e17;
+  --bg2: #111827;
+  --card: #1a2236;
+  --card2: #1f2b42;
+  --accent: #00e68a;
+  --accent2: #00c974;
+  --accentDim: rgba(0,230,138,0.12);
+  --red: #ff4d6a;
+  --redDim: rgba(255,77,106,0.12);
+  --orange: #ff9f43;
+  --orangeDim: rgba(255,159,67,0.12);
+  --blue: #4da6ff;
+  --blueDim: rgba(77,166,255,0.12);
+  --purple: #a78bfa;
+  --purpleDim: rgba(167,139,250,0.12);
+  --cyan: #22d3ee;
+  --text: #f1f5f9;
+  --text2: #8896ab;
+  --text3: #4a5568;
+  --border: rgba(255,255,255,0.06);
+  --glow: 0 0 30px rgba(0,230,138,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  --radius: 18px;
+  --radius2: 14px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { overscroll-behavior:none; }
+body {
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  max-width:100vw;
+  min-height:100vh;
+  padding-bottom:88px;
+  overflow-x:hidden;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position:relative;
+  padding:16px 20px 28px;
+  overflow:hidden;
+}
+.header::before {
+  content:'';
+  position:absolute;
+  top:-60px; right:-60px;
+  width:200px; height:200px;
+  background:radial-gradient(circle, rgba(0,230,138,0.15) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.header::after {
+  content:'';
+  position:absolute;
+  bottom:-40px; left:-40px;
+  width:160px; height:160px;
+  background:radial-gradient(circle, rgba(77,166,255,0.1) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.header-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+  position:relative;
+  z-index:1;
+}
+.logo {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.logo-diamond {
+  width:32px; height:32px;
+  background:linear-gradient(135deg, var(--accent), var(--blue));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  box-shadow:0 0 20px rgba(0,230,138,0.3);
+}
+.logo-text { font-size:18px; font-weight:800; letter-spacing:1.5px; }
+.header-date {
+  font-size:11px;
+  color:var(--text2);
+  background:var(--card);
+  padding:4px 12px;
+  border-radius:20px;
+}
+
+.balance-block {
+  text-align:center;
+  position:relative;
+  z-index:1;
+  padding:8px 0;
+}
+.balance-label { font-size:12px; color:var(--text2); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.balance-amount {
+  font-size:38px;
+  font-weight:800;
+  letter-spacing:-1.5px;
+  background:linear-gradient(135deg, #fff 30%, var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.wallets {
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+  position:relative;
+  z-index:1;
+}
+.wallet {
+  flex:1;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:14px;
+  transition:transform 0.2s;
+}
+.wallet:active { transform:scale(0.97); }
+.wallet-icon { font-size:20px; margin-bottom:6px; }
+.wallet-label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:0.8px; }
+.wallet-amount { font-size:18px; font-weight:700; margin-top:2px; }
+
+/* ===== MONTH CARD ===== */
+.month-card {
+  margin:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+}
+.month-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+.month-title { font-size:15px; font-weight:700; }
+.month-badge {
+  font-size:10px;
+  color:var(--accent);
+  background:var(--accentDim);
+  padding:3px 10px;
+  border-radius:20px;
+  font-weight:600;
+}
+.month-rows { display:flex; flex-direction:column; gap:10px; }
+.month-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.mrow-left { display:flex; align-items:center; gap:10px; }
+.mrow-dot {
+  width:8px; height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.mrow-label { font-size:13px; color:var(--text2); }
+.mrow-val { font-size:14px; font-weight:700; }
+
+/* ===== ACTION GRID ===== */
+.action-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:0 16px 16px;
+}
+.action-btn {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:15px 16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  font-family:inherit;
+  font-size:13px;
+  font-weight:600;
+  color:var(--text);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.action-btn:active { transform:scale(0.96); border-color:var(--accent); }
+.action-icon {
+  width:36px; height:36px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  flex-shrink:0;
+}
+.icon-green { background:var(--accentDim); }
+.icon-red { background:var(--redDim); }
+.icon-blue { background:var(--blueDim); }
+.icon-purple { background:var(--purpleDim); }
+.icon-orange { background:var(--orangeDim); }
+.icon-cyan { background:rgba(34,211,238,0.12); }
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  position:fixed;
+  bottom:0; left:0; right:0;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-around;
+  padding:6px 0 env(safe-area-inset-bottom, 8px);
+  z-index:100;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+.nav-btn {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  background:none;
+  border:none;
+  color:var(--text3);
+  font-family:inherit;
+  font-size:10px;
+  font-weight:500;
+  padding:6px 14px;
+  cursor:pointer;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-btn.active { color:var(--accent); }
+.nav-btn.active::before {
+  content:'';
+  position:absolute;
+  top:-1px;
+  left:50%; transform:translateX(-50%);
+  width:20px; height:3px;
+  background:var(--accent);
+  border-radius:0 0 3px 3px;
+}
+.nav-icon { font-size:20px; }
+
+/* ===== PAGES ===== */
+.page { display:none; animation:fadeIn 0.25s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== SECTION TITLE ===== */
+.stitle {
+  font-size:18px;
+  font-weight:800;
+  padding:20px 20px 12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* ===== TX LIST ===== */
+.tx-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
+.tx-item {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  transition:transform 0.15s;
+}
+.tx-item:active { transform:scale(0.98); }
+.tx-left { display:flex; align-items:center; gap:12px; }
+.tx-icon {
+  width:40px; height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+.tx-cat { font-size:14px; font-weight:600; }
+.tx-date { font-size:11px; color:var(--text2); margin-top:2px; }
+.tx-amt { font-size:15px; font-weight:700; }
+.tx-amt.plus { color:var(--accent); }
+.tx-amt.minus { color:var(--red); }
+
+/* ===== EMPTY ===== */
+.empty {
+  text-align:center;
+  padding:48px 20px;
+  color:var(--text3);
+  font-size:14px;
+}
+.empty-icon { font-size:40px; margin-bottom:12px; opacity:0.5; }
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+  display:flex;
+  margin:0 16px 12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  padding:3px;
+}
+.tab-btn {
+  flex:1;
+  padding:10px;
+  background:none;
+  border:none;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:600;
+  color:var(--text2);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.tab-btn.active { background:var(--accent); color:var(--bg); }
+
+/* ===== DEBT ITEMS ===== */
+.debt-item {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:14px;
+  margin-bottom:8px;
+}
+.debt-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.debt-name { font-size:15px; font-weight:700; }
+.debt-amt { font-size:16px; font-weight:800; }
+.debt-amt.given { color:var(--red); }
+.debt-amt.received { color:var(--accent); }
+.debt-meta { font-size:11px; color:var(--text2); margin-bottom:8px; }
+.debt-btns { display:flex; gap:8px; }
+.debt-btns button {
+  flex:1;
+  padding:9px;
+  border:none;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform 0.15s;
+}
+.debt-btns button:active { transform:scale(0.96); }
+.dbtn-paid { background:var(--accentDim); color:var(--accent); }
+.dbtn-del { background:var(--redDim); color:var(--red); }
+
+/* ===== SAVINGS ===== */
+.sav-item {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:14px;
+  margin-bottom:8px;
+}
+.sav-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.sav-name { font-size:15px; font-weight:700; }
+.sav-pct { font-size:12px; font-weight:700; color:var(--accent); }
+.sav-amounts { font-size:12px; color:var(--text2); margin-bottom:10px; }
+.sav-amounts b { color:var(--accent); font-weight:700; }
+.prog-track { height:6px; background:var(--card2); border-radius:6px; overflow:hidden; margin-bottom:10px; }
+.prog-fill {
+  height:100%;
+  border-radius:6px;
+  background:linear-gradient(90deg, var(--accent), var(--cyan));
+  transition:width 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.sav-btns { display:flex; gap:8px; }
+.sav-btns button {
+  flex:1;
+  padding:9px;
+  border:none;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+}
+.sbtn-add { background:var(--accentDim); color:var(--accent); }
+.sbtn-out { background:var(--blueDim); color:var(--blue); }
+.sbtn-del { background:var(--redDim); color:var(--red); }
+
+/* ===== CALENDAR ===== */
+.cal-nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 16px 12px;
+}
+.cal-nav button {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:8px 18px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+  cursor:pointer;
+}
+.cal-nav span { font-size:16px; font-weight:800; }
+.cal-grid {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  margin:0 16px;
+}
+.cal-h { text-align:center; font-size:11px; font-weight:600; color:var(--text3); padding:4px 0; }
+.cal-d {
+  text-align:center;
+  padding:10px 2px;
+  border-radius:10px;
+  font-size:12px;
+  color:var(--text2);
+  cursor:pointer;
+  transition:all 0.15s;
+}
+.cal-d:active { transform:scale(0.9); }
+.cal-d.has-tx { background:var(--accentDim); color:var(--accent); font-weight:700; }
+.cal-d.today { border:2px solid var(--accent); color:var(--text); }
+.cal-details { margin:12px 16px 0; }
+
+/* ===== STATS ===== */
+.stats-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  margin:0 16px 10px;
+}
+.stats-card h3 { font-size:14px; font-weight:700; margin-bottom:12px; color:var(--text2); }
+.st-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; }
+.st-row + .st-row { border-top:1px solid var(--border); }
+.st-label { font-size:13px; color:var(--text2); }
+.st-val { font-size:14px; font-weight:700; }
+
+/* ===== MODAL ===== */
+.modal-bg {
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.65);
+  z-index:200;
+  align-items:flex-end;
+  justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-bg.show { display:flex; }
+.modal-sheet {
+  background:var(--bg2);
+  width:100%;
+  max-width:480px;
+  border-radius:24px 24px 0 0;
+  padding:8px 20px 32px;
+  max-height:88vh;
+  overflow-y:auto;
+  animation:sheetUp 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes sheetUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.modal-handle {
+  width:36px; height:4px;
+  background:var(--text3);
+  border-radius:4px;
+  margin:6px auto 18px;
+}
+.modal-title { font-size:18px; font-weight:800; text-align:center; margin-bottom:18px; }
+.fg { margin-bottom:14px; }
+.fg label { display:block; font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px; }
+.fg input, .fg select {
+  width:100%;
+  padding:13px 16px;
+  background:var(--card);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:500;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s;
+  -webkit-appearance:none;
+}
+.fg input:focus, .fg select:focus { border-color:var(--accent); }
+.fg input::placeholder { color:var(--text3); }
+.fg select { color:var(--text); }
+.fg select option { background:var(--card); color:var(--text); }
+.modal-submit {
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  font-family:inherit;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:6px;
+  transition:transform 0.15s, box-shadow 0.2s;
+}
+.modal-submit:active { transform:scale(0.97); }
+.msub-green { background:var(--accent); color:var(--bg); box-shadow:0 4px 20px rgba(0,230,138,0.3); }
+.msub-red { background:var(--red); color:#fff; box-shadow:0 4px 20px rgba(255,77,106,0.3); }
+.msub-orange { background:var(--orange); color:var(--bg); box-shadow:0 4px 20px rgba(255,159,67,0.3); }
+.msub-purple { background:var(--purple); color:var(--bg); box-shadow:0 4px 20px rgba(167,139,250,0.3); }
+.msub-blue { background:var(--blue); color:var(--bg); box-shadow:0 4px 20px rgba(77,166,255,0.3); }
+
+/* ===== SETTINGS ===== */
+.set-item {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:15px 16px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  transition:transform 0.15s;
+}
+.set-item:active { transform:scale(0.98); }
+.set-left { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:500; }
+.set-icon { font-size:18px; }
+.set-arrow { color:var(--text3); font-size:14px; }
+
+/* ===== ADVICE ===== */
+.advice-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  padding:14px;
+  margin-bottom:8px;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--text2);
+}
+
+/* ===== CONFIRM ===== */
+.confirm-bg {
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.65);
+  z-index:300;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.confirm-bg.show { display:flex; }
+.confirm-box {
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  width:85%;
+  max-width:340px;
+  text-align:center;
+}
+.confirm-box p { font-size:15px; font-weight:500; margin-bottom:18px; line-height:1.5; }
+.confirm-btns { display:flex; gap:10px; }
+.confirm-btns button {
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+.cbtn-cancel { background:var(--card); color:var(--text); }
+.cbtn-yes { background:var(--red); color:#fff; }
+
+/* ===== Fullwidth button helper ===== */
+.fw-btn {
+  display:block;
+  width:calc(100% - 32px);
+  margin:0 16px 12px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width:0; }
+</style>
+</head>
+<body>
+
+<!-- ===== HOME ===== -->
+<div id="pg-home" class="page active">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-diamond">💎</div>
+        <span class="logo-text">MOLIYA PRO</span>
+      </div>
+      <span class="header-date" id="hdr-date"></span>
+    </div>
+    <div class="balance-block">
+      <div class="balance-label">Umumiy balans</div>
+      <div class="balance-amount" id="bal-total">&#8361;0</div>
+    </div>
+    <div class="wallets">
+      <div class="wallet">
+        <div class="wallet-icon">💵</div>
+        <div class="wallet-label">Naqd</div>
+        <div class="wallet-amount" id="bal-cash">&#8361;0</div>
+      </div>
+      <div class="wallet">
+        <div class="wallet-icon">💳</div>
+        <div class="wallet-label">Karta</div>
+        <div class="wallet-amount" id="bal-card">&#8361;0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month-card">
+    <div class="month-header">
+      <div class="month-title" id="mo-title"></div>
+      <div class="month-badge" id="mo-badge">Bu oy</div>
+    </div>
+    <div class="month-rows">
+      <div class="month-row"><div class="mrow-left"><div class="mrow-dot" style="background:var(--accent)"></div><span class="mrow-label">Kirim</span></div><span class="mrow-val" id="mo-inc" style="color:var(--accent)">&#8361;0</span></div>
+      <div class="month-row"><div class="mrow-left"><div class="mrow-dot" style="background:var(--red)"></div><span class="mrow-label">Chiqim</span></div><span class="mrow-val" id="mo-exp" style="color:var(--red)">&#8361;0</span></div>
+      <div class="month-row"><div class="mrow-left"><div class="mrow-dot" style="background:var(--blue)"></div><span class="mrow-label">Qoldi</span></div><span class="mrow-val" id="mo-left" style="color:var(--blue)">&#8361;0</span></div>
+      <div class="month-row"><div class="mrow-left"><div class="mrow-dot" style="background:var(--orange)"></div><span class="mrow-label">Qarzlar</span></div><span class="mrow-val" id="mo-debt" style="color:var(--orange)">&#8361;0</span></div>
+      <div class="month-row"><div class="mrow-left"><div class="mrow-dot" style="background:var(--purple)"></div><span class="mrow-label">Jamg'arma</span></div><span class="mrow-val" id="mo-sav" style="color:var(--purple)">&#8361;0</span></div>
+    </div>
+  </div>
+
+  <div class="action-grid">
+    <button class="action-btn" onclick="openModal('income')"><div class="action-icon icon-green">📈</div>Kirim</button>
+    <button class="action-btn" onclick="openModal('expense')"><div class="action-icon icon-red">📉</div>Chiqim</button>
+    <button class="action-btn" onclick="go('calendar')"><div class="action-icon icon-blue">📅</div>Kalendar</button>
+    <button class="action-btn" onclick="go('stats')"><div class="action-icon icon-purple">📊</div>Statistika</button>
+    <button class="action-btn" onclick="go('debts')"><div class="action-icon icon-orange">🤝</div>Qarzlar</button>
+    <button class="action-btn" onclick="go('savings')"><div class="action-icon icon-cyan">🏦</div>Jamg'arma</button>
+    <button class="action-btn" onclick="go('advice')"><div class="action-icon" style="background:rgba(250,204,21,0.12)">💡</div>Maslahat</button>
+    <button class="action-btn" onclick="go('settings')"><div class="action-icon" style="background:rgba(148,163,184,0.12)">⚙️</div>Sozlamalar</button>
+  </div>
+</div>
+
+<!-- ===== TRANSACTIONS ===== -->
+<div id="pg-transactions" class="page">
+  <div class="stitle">📋 Tranzaksiyalar</div>
+  <div class="tx-list" id="tx-list"></div>
+</div>
+
+<!-- ===== DEBTS ===== -->
+<div id="pg-debts" class="page">
+  <div class="stitle">🤝 Qarzlar</div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="swDebtTab('given',this)">Bergan</button>
+    <button class="tab-btn" onclick="swDebtTab('received',this)">Olgan</button>
+  </div>
+  <button class="action-btn fw-btn" onclick="openModal('debt')" style="border:1px solid var(--border);background:var(--card)"><div class="action-icon icon-orange">➕</div>Yangi qarz</button>
+  <div id="debt-list" style="padding:0 16px"></div>
+</div>
+
+<!-- ===== SAVINGS ===== -->
+<div id="pg-savings" class="page">
+  <div class="stitle">🏦 Jamg'arma</div>
+  <button class="action-btn fw-btn" onclick="openModal('sgoal')" style="border:1px solid var(--border);background:var(--card)"><div class="action-icon icon-cyan">➕</div>Yangi maqsad</button>
+  <div id="sav-list" style="padding:0 16px"></div>
+</div>
+
+<!-- ===== CALENDAR ===== -->
+<div id="pg-calendar" class="page">
+  <div class="stitle">📅 Kalendar</div>
+  <div class="cal-nav">
+    <button onclick="chMo(-1)">◀</button>
+    <span id="cal-label"></span>
+    <button onclick="chMo(1)">▶</button>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="cal-details" id="cal-det"></div>
+</div>
+
+<!-- ===== STATS ===== -->
+<div id="pg-stats" class="page">
+  <div class="stitle">📊 Statistika</div>
+  <div id="stats-box"></div>
+</div>
+
+<!-- ===== ADVICE ===== -->
+<div id="pg-advice" class="page">
+  <div class="stitle">💡 Maslahat</div>
+  <div id="adv-box" style="padding:0 16px"></div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div id="pg-settings" class="page">
+  <div class="stitle">⚙️ Sozlamalar</div>
+  <div style="padding:0 16px">
+    <div class="set-item" onclick="doExport()"><div class="set-left"><span class="set-icon">💾</span>Zaxira saqlash</div><span class="set-arrow">›</span></div>
+    <div class="set-item" onclick="document.getElementById('imp-f').click()"><div class="set-left"><span class="set-icon">📂</span>Zaxira yuklash</div><span class="set-arrow">›</span></div>
+    <input type="file" id="imp-f" accept=".json" style="display:none" onchange="doImport(event)">
+    <div class="set-item" onclick="askConfirm('Barcha ma\\'lumotlarni o\\'chirmoqchimisiz?',clearAll)"><div class="set-left"><span class="set-icon">🗑️</span>Tozalash</div><span class="set-arrow">›</span></div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="go('home')"><span class="nav-icon">🏠</span>Bosh</button>
+  <button class="nav-btn" onclick="go('transactions')"><span class="nav-icon">📋</span>Tarix</button>
+  <button class="nav-btn" onclick="go('debts')"><span class="nav-icon">🤝</span>Qarz</button>
+  <button class="nav-btn" onclick="go('savings')"><span class="nav-icon">🏦</span>Maqsad</button>
+  <button class="nav-btn" onclick="go('settings')"><span class="nav-icon">⚙️</span>Sozlama</button>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
+  <div class="modal-sheet" id="modal-sheet"></div>
+</div>
+
+<!-- ===== CONFIRM ===== -->
+<div class="confirm-bg" id="conf-bg">
+  <div class="confirm-box">
+    <p id="conf-txt"></p>
+    <div class="confirm-btns">
+      <button class="cbtn-cancel" onclick="closeConf()">Bekor</button>
+      <button class="cbtn-yes" id="conf-yes">Ha</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+var DK = "moliya_pro_v2";
+var D = load();
+function def() { return { cash:0, card:0, tx:[], debts:[], goals:[], cats:{ income:["Maosh","Freelance","Sovg\u02BBa","Qaytim","Boshqa"], expense:["Oziq-ovqat","Transport","Kiyim","Ijara","Telefon","Internet","Sog\u02BBliq","O\u02BByin-kulgi","Ta\u02BBlim","Boshqa"] } }; }
+function load() { try { var s=localStorage.getItem(DK); if(s) return JSON.parse(s); } catch(e){} return def(); }
+function save() { try { localStorage.setItem(DK,JSON.stringify(D)); } catch(e){} }
+function fmt(n) { return "\u20A9"+Math.abs(n||0).toLocaleString("ko-KR"); }
+function gid() { return Date.now().toString(36)+Math.random().toString(36).substr(2,5); }
+function td() { var d=new Date(); return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate()); }
+function p2(n) { return n<10?"0"+n:""+n; }
+var MN = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
+function moStr(d) { return MN[d.getMonth()]+" "+d.getFullYear(); }
+
+/* ===== TELEGRAM ===== */
+var tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { try { tg.ready(); tg.expand(); tg.setHeaderColor("#0a0e17"); tg.setBackgroundColor("#0a0e17"); } catch(e){} }
+
+/* ===== NAV ===== */
+var curPg = "home";
+var navMap = {home:0,transactions:1,debts:2,savings:3,settings:4,calendar:0,stats:0,advice:0};
+function go(pg) {
+  curPg=pg;
+  var pages=document.querySelectorAll(".page");
+  for(var i=0;i<pages.length;i++) pages[i].classList.remove("active");
+  var el=document.getElementById("pg-"+pg);
+  if(el) el.classList.add("active");
+  var navs=document.querySelectorAll(".nav-btn");
+  for(var i=0;i<navs.length;i++) navs[i].classList.remove("active");
+  if(navMap[pg]!==undefined && navs[navMap[pg]]) navs[navMap[pg]].classList.add("active");
+  if(pg==="home") rHome();
+  if(pg==="transactions") rTx();
+  if(pg==="debts") rDebts();
+  if(pg==="savings") rSav();
+  if(pg==="calendar") rCal();
+  if(pg==="stats") rStats();
+  if(pg==="advice") rAdv();
+  window.scrollTo(0,0);
+}
+
+/* ===== HOME ===== */
+function rHome() {
+  var tc=D.cash||0, tk=D.card||0;
+  document.getElementById("bal-total").textContent=fmt(tc+tk);
+  document.getElementById("bal-cash").textContent=fmt(tc);
+  document.getElementById("bal-card").textContent=fmt(tk);
+  document.getElementById("hdr-date").textContent=td();
+  var now=new Date();
+  document.getElementById("mo-title").textContent=moStr(now);
+  var mk=now.getFullYear()+"-"+p2(now.getMonth()+1);
+  var mi=0,me=0;
+  for(var i=0;i<D.tx.length;i++){var t=D.tx[i];if(t.date&&t.date.substring(0,7)===mk){if(t.type==="income")mi+=t.amount;else me+=t.amount;}}
+  var md=0;
+  for(var i=0;i<D.debts.length;i++){var d=D.debts[i];if(d.date&&d.date.substring(0,7)===mk)md+=d.amount;}
+  var ms=0;
+  for(var i=0;i<D.goals.length;i++){var g=D.goals[i];if(g.deps)for(var j=0;j<g.deps.length;j++){if(g.deps[j].date&&g.deps[j].date.substring(0,7)===mk)ms+=g.deps[j].amount;}}
+  document.getElementById("mo-inc").textContent=fmt(mi);
+  document.getElementById("mo-exp").textContent=fmt(me);
+  document.getElementById("mo-left").textContent=fmt(mi-me);
+  document.getElementById("mo-debt").textContent=fmt(md);
+  document.getElementById("mo-sav").textContent=fmt(ms);
+}
+
+/* ===== MODAL ===== */
+function openModal(type,extra) {
+  var html="<div class=\"modal-handle\"></div>";
+  if(type==="income"||type==="expense") {
+    var isI=type==="income";
+    var cats=isI?D.cats.income:D.cats.expense;
+    var opts="";for(var i=0;i<cats.length;i++) opts+="<option value=\""+cats[i]+"\">"+cats[i]+"</option>";
+    html+="<div class=\"modal-title\">"+(isI?"📈 Kirim":"📉 Chiqim")+"</div>"+
+      "<div class=\"fg\"><label>Summa (\u20A9)</label><input type=\"number\" id=\"f-amt\" placeholder=\"0\" inputmode=\"numeric\"></div>"+
+      "<div class=\"fg\"><label>Kategoriya</label><select id=\"f-cat\">"+opts+"</select></div>"+
+      "<div class=\"fg\"><label>Hamyon</label><select id=\"f-wal\"><option value=\"cash\">Naqd</option><option value=\"card\">Karta</option></select></div>"+
+      "<div class=\"fg\"><label>Sana</label><input type=\"date\" id=\"f-date\"></div>"+
+      "<div class=\"fg\"><label>Izoh</label><input type=\"text\" id=\"f-note\" placeholder=\"Izoh...\"></div>"+
+      "<button class=\"modal-submit "+(isI?"msub-green":"msub-red")+"\" onclick=\"subTx('"+type+"')\">"+(isI?"Kiritish":"Chiqarish")+"</button>";
+  }
+  if(type==="debt") {
+    html+="<div class=\"modal-title\">🤝 Yangi qarz</div>"+
+      "<div class=\"fg\"><label>Tur</label><select id=\"f-dt\"><option value=\"given\">Men berdim</option><option value=\"received\">Men oldim</option></select></div>"+
+      "<div class=\"fg\"><label>Kimga / Kimdan</label><input type=\"text\" id=\"f-dp\" placeholder=\"Ism\"></div>"+
+      "<div class=\"fg\"><label>Summa (\u20A9)</label><input type=\"number\" id=\"f-da\" placeholder=\"0\" inputmode=\"numeric\"></div>"+
+      "<div class=\"fg\"><label>Sana</label><input type=\"date\" id=\"f-dd\"></div>"+
+      "<div class=\"fg\"><label>Izoh</label><input type=\"text\" id=\"f-dn\" placeholder=\"Izoh...\"></div>"+
+      "<button class=\"modal-submit msub-orange\" onclick=\"subDebt()\">Saqlash</button>";
+  }
+  if(type==="sgoal") {
+    html+="<div class=\"modal-title\">🏦 Yangi maqsad</div>"+
+      "<div class=\"fg\"><label>Maqsad nomi</label><input type=\"text\" id=\"f-gn\" placeholder=\"Masalan: Telefon\"></div>"+
+      "<div class=\"fg\"><label>Kerakli summa (\u20A9)</label><input type=\"number\" id=\"f-gt\" placeholder=\"0\" inputmode=\"numeric\"></div>"+
+      "<button class=\"modal-submit msub-purple\" onclick=\"subGoal()\">Yaratish</button>";
+  }
+  if(type==="sadd") {
+    html+="<div class=\"modal-title\">💰 Pul qo\u02BBshish</div>"+
+      "<div class=\"fg\"><label>Summa (\u20A9)</label><input type=\"number\" id=\"f-sa\" placeholder=\"0\" inputmode=\"numeric\"></div>"+
+      "<div class=\"fg\"><label>Hamyon</label><select id=\"f-sw\"><option value=\"cash\">Naqd</option><option value=\"card\">Karta</option></select></div>"+
+      "<div class=\"fg\"><label>Sana</label><input type=\"date\" id=\"f-sd\"></div>"+
+      "<button class=\"modal-submit msub-green\" onclick=\"subSAdd('"+extra+"')\">Qo\u02BBshish</button>";
+  }
+  if(type==="sout") {
+    html+="<div class=\"modal-title\">💸 Pul qaytarish</div>"+
+      "<div class=\"fg\"><label>Summa (\u20A9)</label><input type=\"number\" id=\"f-oa\" placeholder=\"0\" inputmode=\"numeric\"></div>"+
+      "<div class=\"fg\"><label>Qaysi hamyon</label><select id=\"f-ow\"><option value=\"cash\">Naqd</option><option value=\"card\">Karta</option></select></div>"+
+      "<button class=\"modal-submit msub-blue\" onclick=\"subSOut('"+extra+"')\">Qaytarish</button>";
+  }
+  document.getElementById("modal-sheet").innerHTML=html;
+  document.getElementById("modal-bg").classList.add("show");
+}
+function closeM() { document.getElementById("modal-bg").classList.remove("show"); }
+function closeModalBg(e) { if(e.target===document.getElementById("modal-bg")) closeM(); }
+
+/* ===== TRANSACTIONS ===== */
+function subTx(type) {
+  var a=parseInt(document.getElementById("f-amt").value)||0;
+  if(a<=0) return alert("Summani kiriting!");
+  var date=document.getElementById("f-date").value;
+  if(!date) return alert("Sanani kiriting!");
+  var cat=document.getElementById("f-cat").value;
+  var wal=document.getElementById("f-wal").value;
+  var note=document.getElementById("f-note").value;
+  D.tx.push({id:gid(),type:type,amount:a,category:cat,wallet:wal,date:date,note:note});
+  if(type==="income"){if(wal==="cash")D.cash+=a;else D.card+=a;}
+  else{if(wal==="cash")D.cash-=a;else D.card-=a;}
+  save();closeM();rHome();
+}
+function rTx() {
+  var el=document.getElementById("tx-list");
+  var s=D.tx.slice().sort(function(a,b){return b.date.localeCompare(a.date)||b.id.localeCompare(a.id);});
+  if(!s.length){el.innerHTML="<div class=\"empty\"><div class=\"empty-icon\">📋</div>Hali tranzaksiyalar yo\u02BBq</div>";return;}
+  var h="";
+  for(var i=0;i<s.length;i++){var t=s[i];var isI=t.type==="income";
+    h+="<div class=\"tx-item\"><div class=\"tx-left\"><div class=\"tx-icon\" style=\"background:"+(isI?"var(--accentDim)":"var(--redDim)")+"\">"+(isI?"📈":"📉")+"</div><div><div class=\"tx-cat\">"+t.category+"</div><div class=\"tx-date\">"+t.date+" \u00B7 "+(t.wallet==="cash"?"Naqd":"Karta")+(t.note?" \u00B7 "+t.note:"")+"</div></div></div><div class=\"tx-amt "+(isI?"plus":"minus")+"\">"+(isI?"+":"-")+fmt(t.amount)+"</div></div>";}
+  el.innerHTML=h;
+}
+
+/* ===== DEBTS ===== */
+var dTab="given";
+function swDebtTab(t,btn){dTab=t;var bs=btn.parentElement.children;for(var i=0;i<bs.length;i++)bs[i].classList.remove("active");btn.classList.add("active");rDebts();}
+function subDebt(){
+  var type=document.getElementById("f-dt").value;
+  var per=document.getElementById("f-dp").value.trim();
+  var amt=parseInt(document.getElementById("f-da").value)||0;
+  var date=document.getElementById("f-dd").value;
+  var note=document.getElementById("f-dn").value;
+  if(!per)return alert("Ismni kiriting!");
+  if(amt<=0)return alert("Summani kiriting!");
+  if(!date)return alert("Sanani kiriting!");
+  D.debts.push({id:gid(),type:type,person:per,amount:amt,date:date,note:note,paid:false});
+  save();closeM();rDebts();rHome();
+}
+function rDebts(){
+  var el=document.getElementById("debt-list");
+  var f=[];for(var i=0;i<D.debts.length;i++)if(D.debts[i].type===dTab)f.push(D.debts[i]);
+  f.sort(function(a,b){return b.date.localeCompare(a.date);});
+  if(!f.length){el.innerHTML="<div class=\"empty\"><div class=\"empty-icon\">🤝</div>Qarzlar yo\u02BBq</div>";return;}
+  var h="";
+  for(var i=0;i<f.length;i++){var d=f[i];var st=d.paid?" \u2705":"";
+    h+="<div class=\"debt-item\"><div class=\"debt-top\"><div class=\"debt-name\">"+d.person+st+"</div><div class=\"debt-amt "+d.type+"\">"+fmt(d.amount)+"</div></div><div class=\"debt-meta\">"+d.date+(d.note?" \u00B7 "+d.note:"")+"</div>";
+    if(!d.paid)h+="<div class=\"debt-btns\"><button class=\"dbtn-paid\" onclick=\"markPaid('"+d.id+"')\">To\u02BBlandi \u2705</button><button class=\"dbtn-del\" onclick=\"delDebt('"+d.id+"')\">O\u02BBchirish</button></div>";
+    else h+="<div class=\"debt-btns\"><button class=\"dbtn-del\" onclick=\"delDebt('"+d.id+"')\">O\u02BBchirish</button></div>";
+    h+="</div>";}
+  el.innerHTML=h;
+}
+function markPaid(id){for(var i=0;i<D.debts.length;i++)if(D.debts[i].id===id){D.debts[i].paid=true;break;}save();rDebts();}
+function delDebt(id){askConfirm("Bu qarzni o\u02BBchirmoqchimisiz?",function(){D.debts=D.debts.filter(function(d){return d.id!==id;});save();rDebts();rHome();});}
+
+/* ===== SAVINGS ===== */
+function subGoal(){
+  var n=document.getElementById("f-gn").value.trim();
+  var t=parseInt(document.getElementById("f-gt").value)||0;
+  if(!n)return alert("Nom kiriting!");if(t<=0)return alert("Summani kiriting!");
+  D.goals.push({id:gid(),name:n,target:t,cur:0,deps:[]});save();closeM();rSav();
+}
+function subSAdd(gid2){
+  var a=parseInt(document.getElementById("f-sa").value)||0;
+  var w=document.getElementById("f-sw").value;
+  var date=document.getElementById("f-sd").value;
+  if(a<=0)return alert("Summani kiriting!");
+  if(!date)return alert("Sanani kiriting!");
+  for(var i=0;i<D.goals.length;i++){if(D.goals[i].id===gid2){
+    D.goals[i].cur+=a;if(!D.goals[i].deps)D.goals[i].deps=[];
+    D.goals[i].deps.push({amount:a,wallet:w,date:date});
+    if(w==="cash")D.cash-=a;else D.card-=a;break;}}
+  save();closeM();rSav();rHome();
+}
+function subSOut(gid2){
+  var a=parseInt(document.getElementById("f-oa").value)||0;
+  var w=document.getElementById("f-ow").value;
+  if(a<=0)return alert("Summani kiriting!");
+  for(var i=0;i<D.goals.length;i++){if(D.goals[i].id===gid2){
+    if(a>D.goals[i].cur)return alert("Yetarli mablag\u02BB yo\u02BBq!");
+    D.goals[i].cur-=a;if(w==="cash")D.cash+=a;else D.card+=a;break;}}
+  save();closeM();rSav();rHome();
+}
+function delGoal(id){askConfirm("Bu maqsadni o\u02BBchirmoqchimisiz?",function(){D.goals=D.goals.filter(function(g){return g.id!==id;});save();rSav();});}
+function rSav(){
+  var el=document.getElementById("sav-list");
+  if(!D.goals.length){el.innerHTML="<div class=\"empty\"><div class=\"empty-icon\">🏦</div>Maqsadlar yo\u02BBq</div>";return;}
+  var h="";
+  for(var i=0;i<D.goals.length;i++){var g=D.goals[i];var pct=g.target>0?Math.min(100,Math.round(g.cur/g.target*100)):0;
+    h+="<div class=\"sav-item\"><div class=\"sav-top\"><div class=\"sav-name\">"+g.name+"</div><div class=\"sav-pct\">"+pct+"%</div></div>"+
+      "<div class=\"sav-amounts\"><b>"+fmt(g.cur)+"</b> / "+fmt(g.target)+"</div>"+
+      "<div class=\"prog-track\"><div class=\"prog-fill\" style=\"width:"+pct+"%\"></div></div>"+
+      "<div class=\"sav-btns\"><button class=\"sbtn-add\" onclick=\"openModal('sadd','"+g.id+"')\">💰 Qo\u02BBshish</button><button class=\"sbtn-out\" onclick=\"openModal('sout','"+g.id+"')\">💸 Qaytarish</button><button class=\"sbtn-del\" onclick=\"delGoal('"+g.id+"')\">🗑️</button></div></div>";}
+  el.innerHTML=h;
+}
+
+/* ===== CALENDAR ===== */
+var cY,cM;(function(){var d=new Date();cY=d.getFullYear();cM=d.getMonth();})();
+function chMo(dir){cM+=dir;if(cM<0){cM=11;cY--;}if(cM>11){cM=0;cY++;}rCal();}
+function rCal(){
+  document.getElementById("cal-label").textContent=moStr(new Date(cY,cM,1));
+  var g=document.getElementById("cal-grid");
+  var ds=["Du","Se","Ch","Pa","Ju","Sh","Ya"];
+  var h="";for(var i=0;i<ds.length;i++)h+="<div class=\"cal-h\">"+ds[i]+"</div>";
+  var fd=new Date(cY,cM,1).getDay();fd=fd===0?6:fd-1;
+  var dim=new Date(cY,cM+1,0).getDate();
+  var now=new Date();var todS=now.getFullYear()+"-"+p2(now.getMonth()+1)+"-"+p2(now.getDate());
+  var mk=cY+"-"+p2(cM+1);var txD={};
+  for(var i=0;i<D.tx.length;i++)if(D.tx[i].date&&D.tx[i].date.substring(0,7)===mk)txD[D.tx[i].date]=true;
+  for(var i=0;i<D.debts.length;i++)if(D.debts[i].date&&D.debts[i].date.substring(0,7)===mk)txD[D.debts[i].date]=true;
+  for(var i=0;i<fd;i++)h+="<div class=\"cal-d\"></div>";
+  for(var d=1;d<=dim;d++){var ds2=cY+"-"+p2(cM+1)+"-"+p2(d);var cl="cal-d";if(txD[ds2])cl+=" has-tx";if(ds2===todS)cl+=" today";
+    h+="<div class=\""+cl+"\" onclick=\"showDay('"+ds2+"')\">"+d+"</div>";}
+  g.innerHTML=h;document.getElementById("cal-det").innerHTML="";
+}
+function showDay(ds){
+  var txs=D.tx.filter(function(t){return t.date===ds;});
+  var dbs=D.debts.filter(function(d){return d.date===ds;});
+  var el=document.getElementById("cal-det");
+  if(!txs.length&&!dbs.length){el.innerHTML="<div class=\"empty\">"+ds+" \u2014 ma\u02BBlumot yo\u02BBq</div>";return;}
+  var h="<div style=\"font-size:14px;font-weight:700;margin-bottom:8px\">"+ds+"</div>";
+  for(var i=0;i<txs.length;i++){var t=txs[i];var isI=t.type==="income";
+    h+="<div class=\"tx-item\" style=\"margin-bottom:6px\"><div class=\"tx-left\"><div class=\"tx-icon\" style=\"background:"+(isI?"var(--accentDim)":"var(--redDim)")+"\">"+(isI?"📈":"📉")+"</div><div><div class=\"tx-cat\">"+t.category+"</div></div></div><div class=\"tx-amt "+(isI?"plus":"minus")+"\">"+(isI?"+":"-")+fmt(t.amount)+"</div></div>";}
+  for(var i=0;i<dbs.length;i++){var d=dbs[i];
+    h+="<div class=\"tx-item\" style=\"margin-bottom:6px\"><div class=\"tx-left\"><div class=\"tx-icon\" style=\"background:var(--orangeDim)\">🤝</div><div><div class=\"tx-cat\">"+d.person+" ("+(d.type==="given"?"berdim":"oldim")+")</div></div></div><div class=\"tx-amt\" style=\"color:var(--orange)\">"+fmt(d.amount)+"</div></div>";}
+  el.innerHTML=h;
+}
+
+/* ===== STATS ===== */
+function rStats(){
+  var el=document.getElementById("stats-box");
+  var now=new Date();var mk=now.getFullYear()+"-"+p2(now.getMonth()+1);
+  var ti=0,te=0,mi=0,me2=0,cE={},cI={};
+  for(var i=0;i<D.tx.length;i++){var t=D.tx[i];
+    if(t.type==="income"){ti+=t.amount;cI[t.category]=(cI[t.category]||0)+t.amount;if(t.date&&t.date.substring(0,7)===mk)mi+=t.amount;}
+    else{te+=t.amount;cE[t.category]=(cE[t.category]||0)+t.amount;if(t.date&&t.date.substring(0,7)===mk)me2+=t.amount;}}
+  var tdg=0,tdr=0,adg=0,adr=0;
+  for(var i=0;i<D.debts.length;i++){var d=D.debts[i];if(d.type==="given"){tdg+=d.amount;if(!d.paid)adg+=d.amount;}else{tdr+=d.amount;if(!d.paid)adr+=d.amount;}}
+  var tSaved=0,tTarget=0;
+  for(var i=0;i<D.goals.length;i++){tSaved+=D.goals[i].cur;tTarget+=D.goals[i].target;}
+  var h="";
+  h+="<div class=\"stats-card\"><h3>📊 Umumiy</h3><div class=\"st-row\"><span class=\"st-label\">Jami kirim</span><span class=\"st-val\" style=\"color:var(--accent)\">+"+fmt(ti)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Jami chiqim</span><span class=\"st-val\" style=\"color:var(--red)\">-"+fmt(te)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Sof foyda</span><span class=\"st-val\">"+fmt(ti-te)+"</span></div></div>";
+  h+="<div class=\"stats-card\"><h3>📅 Bu oy</h3><div class=\"st-row\"><span class=\"st-label\">Kirim</span><span class=\"st-val\" style=\"color:var(--accent)\">+"+fmt(mi)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Chiqim</span><span class=\"st-val\" style=\"color:var(--red)\">-"+fmt(me2)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Qoldi</span><span class=\"st-val\">"+fmt(mi-me2)+"</span></div></div>";
+  h+="<div class=\"stats-card\"><h3>🤝 Qarzlar</h3><div class=\"st-row\"><span class=\"st-label\">Jami bergan</span><span class=\"st-val\" style=\"color:var(--red)\">"+fmt(tdg)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Qaytarilmagan</span><span class=\"st-val\" style=\"color:var(--orange)\">"+fmt(adg)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Jami olgan</span><span class=\"st-val\" style=\"color:var(--accent)\">"+fmt(tdr)+"</span></div><div class=\"st-row\"><span class=\"st-label\">To\u02BBlanmagan</span><span class=\"st-val\" style=\"color:var(--orange)\">"+fmt(adr)+"</span></div></div>";
+  h+="<div class=\"stats-card\"><h3>🏦 Jamg\u02BBarma</h3><div class=\"st-row\"><span class=\"st-label\">Yig\u02BBilgan</span><span class=\"st-val\" style=\"color:var(--purple)\">"+fmt(tSaved)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Jami maqsad</span><span class=\"st-val\">"+fmt(tTarget)+"</span></div><div class=\"st-row\"><span class=\"st-label\">Maqsadlar</span><span class=\"st-val\">"+D.goals.length+"</span></div></div>";
+  var ek=Object.keys(cE).sort(function(a,b){return cE[b]-cE[a];});
+  if(ek.length){h+="<div class=\"stats-card\"><h3>📉 Chiqim kategoriyalari</h3>";for(var i=0;i<ek.length;i++){var p=te>0?Math.round(cE[ek[i]]/te*100):0;h+="<div class=\"st-row\"><span class=\"st-label\">"+ek[i]+" ("+p+"%)</span><span class=\"st-val\" style=\"color:var(--red)\">"+fmt(cE[ek[i]])+"</span></div>";}h+="</div>";}
+  var ik=Object.keys(cI).sort(function(a,b){return cI[b]-cI[a];});
+  if(ik.length){h+="<div class=\"stats-card\"><h3>📈 Kirim kategoriyalari</h3>";for(var i=0;i<ik.length;i++)h+="<div class=\"st-row\"><span class=\"st-label\">"+ik[i]+"</span><span class=\"st-val\" style=\"color:var(--accent)\">"+fmt(cI[ik[i]])+"</span></div>";h+="</div>";}
+  el.innerHTML=h;
+}
+
+/* ===== ADVICE ===== */
+function rAdv(){
+  var el=document.getElementById("adv-box");
+  var tot=(D.cash||0)+(D.card||0);
+  var now=new Date();var mk=now.getFullYear()+"-"+p2(now.getMonth()+1);var me3=0,mi2=0;
+  for(var i=0;i<D.tx.length;i++){var t=D.tx[i];if(t.date&&t.date.substring(0,7)===mk){if(t.type==="income")mi2+=t.amount;else me3+=t.amount;}}
+  var tips=[];
+  tips.push("💡 Har oylik daromadingizning kamida 20% ini jamg\u02BBarmaga ajrating.");
+  tips.push("💡 Kutilmagan xarajatlar uchun 3 oylik xarajat miqdorida zaxira fond yarating.");
+  if(me3>mi2&&mi2>0)tips.push("\u26A0\uFE0F Bu oy chiqimlar kirimdan oshib ketdi!");
+  if(tot<0)tips.push("\u26A0\uFE0F Balansingiz manfiy! Xarajatlarni kamaytiring.");
+  var ad=0;for(var i=0;i<D.debts.length;i++)if(!D.debts[i].paid)ad++;
+  if(ad>3)tips.push("\u26A0\uFE0F Sizda "+ad+" ta faol qarz bor. Tezroq yoping.");
+  tips.push("💡 Kichik summalarni ham yozib boring.");
+  tips.push("💡 Oylik byudjet rejasi tuzing va rioya qiling.");
+  var h="";for(var i=0;i<tips.length;i++)h+="<div class=\"advice-card\">"+tips[i]+"</div>";
+  el.innerHTML=h;
+}
+
+/* ===== SETTINGS ===== */
+function doExport(){
+  var json=JSON.stringify(D,null,2);
+  var blob=new Blob([json],{type:"application/json"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");a.href=url;a.download="moliya_backup_"+td()+".json";a.click();URL.revokeObjectURL(url);
+}
+function doImport(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();r.onload=function(ev){try{D=JSON.parse(ev.target.result);save();alert("Yuklandi!");rHome();}catch(er){alert("Fayl xato!");}};r.readAsText(f);e.target.value="";
+}
+function clearAll(){D=def();save();rHome();go("home");}
+
+/* ===== CONFIRM ===== */
+var confCb=null;
+function askConfirm(txt,cb){document.getElementById("conf-txt").textContent=txt;document.getElementById("conf-bg").classList.add("show");confCb=cb;document.getElementById("conf-yes").onclick=function(){closeConf();if(confCb)confCb();};}
+function closeConf(){document.getElementById("conf-bg").classList.remove("show");confCb=null;}
+
+/* ===== INIT ===== */
+rHome();
+</script>
+</body>
+</html>
